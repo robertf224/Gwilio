@@ -31,7 +31,7 @@ def start(username, password, callback=None, post=None):
 			return
 
 		# fetch emails
-		emails = g.inbox().mail(unread=True, after=datetime.date.today())
+		emails = g.inbox().mail(unread=True, after=datetime.date.today()-datetime.timedelta(1))
 		for email in emails:
 			email.fetch()
 			email.read()
