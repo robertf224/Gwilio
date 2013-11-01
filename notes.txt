@@ -1,0 +1,1 @@
+it's actually pip install pygmail, since original guy never uploaded it to pypi
