@@ -7,6 +7,7 @@ Installation
 ------------
 
 ``` bash
+pip install requests
 pip install pygmail
 pip install Gwilio
 ```
