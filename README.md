@@ -39,4 +39,4 @@ import Gwilio
 Gwilio.start('gmail-username', 'gmail-password', post='http://example.com/post-endpoint')
 ```
 
-In both of these examples, you would send SMS messages to 'gmail-username@gmail.com' for your defined behavior to be carried out.
+In both of these examples, you would send SMS messages to gmail-username@gmail.com for your defined behavior to be carried out.
