@@ -41,4 +41,8 @@ Gwilio.start('gmail-username', 'gmail-password', post='http://example.com/post-e
 
 In both of these examples, you would send SMS messages to gmail-username@gmail.com for your defined behavior to be carried out.
 
+Future Updates
+--------------
 
+* MMS support
+* Could add multithreading for replies
