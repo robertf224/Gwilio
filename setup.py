@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
 	name = 'Gwilio',
-	version = '1.2',
+	version = '1.3',
 	description = 'Host your own Twilio clone for free',
 	author = 'Robert Fidler',
 	author_email = 'robertf224@gmail.com',
