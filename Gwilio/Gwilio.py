@@ -2,9 +2,9 @@ import gmail, requests
 import json, datetime, threading, time, smtplib, signal, sys
 
 
-def start(username, password, callback=None, post=None):
+def start(username, password, callback=None, post=None, sleeptime=30):
 
-	# make sure callback or post address is provided, and not both
+	# Make sure callback or post address is provided, and not both
 	if not (bool(callback) ^ bool(post)):
 		return
 
@@ -12,7 +12,7 @@ def start(username, password, callback=None, post=None):
 	g = gmail.login(username, password)
 	if not g.logged_in:
 		return
-	emails = g.inbox().mail(unread=True, after=datetime.date.today())
+	emails = g.inbox().mail(unread=True, after=datetime.date.today()-datetime.timedelta(1))
 	for email in emails:
 		email.read()
 	g.logout()
@@ -26,34 +26,43 @@ def start(username, password, callback=None, post=None):
 
 	# Start fetching emails
 	while True:
+
+		# Log into gmail
 		g = gmail.login(username, password)
 		if not g.logged_in:
 			return
 
-		# fetch emails
+		# Fetch new emails and read them
 		emails = g.inbox().mail(unread=True, after=datetime.date.today()-datetime.timedelta(1))
 		for email in emails:
 			email.fetch()
 			email.read()
 		g.logout()
 
-		# start responding/replying
+		# Start responding/replying
 		for email in emails:
 			number = email.fr[:email.fr.index('@')]
+			reply = None
+
+			# Forward message, retrieve reply
 			if callback is not None:
 				reply = callback(number, email.body)
-				if reply is not None:
-					# reply to email
-					server = smtplib.SMTP('smtp.gmail.com:587')
-					server.ehlo()
-					server.starttls()
-					server.ehlo()
-					server.login(username,password)
-					server.sendmail(username+'@gmail.com', email.fr, reply)
-					server.quit()
 			else:
-				requests.post(post, data={'number': number, 'message': email.body})
+				r = requests.post(post, data={'number': number, 'message': email.body})
+				reply = r.text
 
-		time.sleep(20)
+			# If there is one, send reply
+			if reply is not None:
+				# reply to email
+				server = smtplib.SMTP('smtp.gmail.com:587')
+				server.ehlo()
+				server.starttls()
+				server.ehlo()
+				server.login(username,password)
+				server.sendmail(username+'@gmail.com', email.fr, reply)
+				server.quit()
+
+		# Sleep for designated amount of time
+		time.sleep(sleeptime)
 
 

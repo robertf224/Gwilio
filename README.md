@@ -17,7 +17,7 @@ You should also create a new gmail address for your Gwilio server.
 Usage
 -----
 
-Gwilio can receive SMS messages and can either reply to them or post the phone number and message to another server, mimicking the functionality provided by Twilio.
+Gwilio can receive SMS messages and can either reply to them provided a callback function, or post the phone number and message to another server, mimicking the functionality provided by Twilio.
 
 If you want to respond to messages directly, define a callback function which takes the phone number and the message as arguments.  Whatever string you return will be the reply sent to the sender.
 
@@ -31,7 +31,7 @@ def callback(number, message):
 Gwilio.start('gmail-username', 'gmail-password', callback)
 ```
 
-If you want to post the phone number and message to another server, just specify the post address.
+If you want to post the phone number and message to another server, just specify the post address.  The server listening for requests at the specified post address should respond with the desired reply.
 
 ``` python
 import Gwilio
@@ -40,3 +40,5 @@ Gwilio.start('gmail-username', 'gmail-password', post='http://example.com/post-e
 ```
 
 In both of these examples, you would send SMS messages to gmail-username@gmail.com for your defined behavior to be carried out.
+
+
